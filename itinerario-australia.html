@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Sydney Marathon 2026 — Itinerario Australia</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0B1F24;
+    --panel:#11313A;
+    --panel-light:#173D47;
+    --coral:#FF6A4D;
+    --gold:#F2B84B;
+    --teal:#4FD1C5;
+    --text:#F4F1E8;
+    --muted:#9FB8BC;
+    --line: rgba(244,241,232,0.12);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    line-height:1.55;
+  }
+  h1,h2,h3,.stamp-title{font-family:'Fraunces',serif;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+
+  /* HERO */
+  .hero{
+    padding:72px 24px 48px;
+    max-width:920px;
+    margin:0 auto;
+    text-align:left;
+    border-bottom:1px solid var(--line);
+  }
+  .hero .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    color:var(--coral);
+    letter-spacing:.12em;
+    font-size:12px;
+    text-transform:uppercase;
+    margin-bottom:14px;
+  }
+  .hero h1{
+    font-size:44px;
+    font-weight:600;
+    margin:0 0 14px;
+    line-height:1.05;
+    max-width:680px;
+  }
+  .hero p.sub{
+    color:var(--muted);
+    font-size:17px;
+    max-width:560px;
+    margin:0 0 28px;
+  }
+  .facts{
+    display:flex;
+    flex-wrap:wrap;
+    gap:0;
+    border:1px solid var(--line);
+    border-radius:2px;
+  }
+  .fact{
+    flex:1 1 140px;
+    padding:16px 18px;
+    border-right:1px solid var(--line);
+  }
+  .fact:last-child{border-right:none;}
+  .fact .n{font-family:'JetBrains Mono',monospace; font-size:22px; color:var(--gold);}
+  .fact .l{font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; margin-top:4px;}
+
+  /* NAV */
+  .navbar{
+    position:sticky; top:0; z-index:50;
+    background:rgba(11,31,36,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+    display:flex; gap:0; overflow-x:auto;
+  }
+  .navbar a{
+    color:var(--muted);
+    text-decoration:none;
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    padding:14px 20px;
+    white-space:nowrap;
+    border-bottom:2px solid transparent;
+  }
+  .navbar a:hover{color:var(--text); border-bottom-color:var(--coral);}
+
+  /* LEG SECTIONS */
+  .leg{
+    max-width:920px;
+    margin:0 auto;
+    padding:56px 24px 24px;
+    position:relative;
+  }
+  .leg-header{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    margin-bottom:8px;
+  }
+  .leg-badge{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    padding:5px 10px;
+    border-radius:2px;
+    color:var(--ink);
+    font-weight:600;
+  }
+  .leg h2{font-size:30px; margin:0; font-weight:600;}
+  .leg .range{color:var(--muted); font-family:'JetBrains Mono',monospace; font-size:13px; margin:6px 0 24px;}
+  .leg-photo{
+    width:100%;
+    height:260px;
+    object-fit:cover;
+    border-radius:3px;
+    margin-bottom:32px;
+    filter:saturate(1.05);
+  }
+
+  /* Sydney = teal, Cairns = coral, Melbourne = gold */
+  .sydney .leg-badge{background:var(--teal);}
+  .cairns .leg-badge{background:var(--coral);}
+  .melbourne .leg-badge{background:var(--gold);}
+  .sydney2 .leg-badge{background:var(--teal);}
+
+  /* DAY TIMELINE */
+  .timeline{
+    position:relative;
+    padding-left:36px;
+  }
+  .timeline::before{
+    content:"";
+    position:absolute;
+    left:9px; top:6px; bottom:6px;
+    width:2px;
+    background:repeating-linear-gradient(to bottom, var(--dot,var(--teal)) 0 4px, transparent 4px 9px);
+  }
+  .sydney .timeline{--dot:var(--teal);}
+  .cairns .timeline{--dot:var(--coral);}
+  .melbourne .timeline{--dot:var(--gold);}
+  .sydney2 .timeline{--dot:var(--teal);}
+
+  .day{
+    position:relative;
+    padding-bottom:34px;
+  }
+  .day::before{
+    content:"";
+    position:absolute;
+    left:-31px; top:4px;
+    width:12px; height:12px;
+    border-radius:50%;
+    background:var(--dot,var(--teal));
+    border:2px solid var(--ink);
+  }
+  .day-head{
+    display:flex;
+    align-items:baseline;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-bottom:6px;
+  }
+  .day-date{
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    color:var(--dot,var(--teal));
+    font-weight:500;
+  }
+  .day-title{font-size:19px; font-weight:600; font-family:'Fraunces',serif;}
+  .day-desc{color:var(--muted); font-size:15px; max-width:640px; margin:0 0 10px;}
+  .day ul{margin:0; padding-left:18px; font-size:14.5px;}
+  .day li{margin-bottom:4px;}
+  .tag{
+    display:inline-block;
+    font-family:'JetBrains Mono',monospace;
+    font-size:10.5px;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    padding:2px 7px;
+    border-radius:2px;
+    margin-left:8px;
+    vertical-align:middle;
+  }
+  .tag.confirmed{background:rgba(79,209,197,0.15); color:var(--teal); border:1px solid rgba(79,209,197,0.4);}
+  .tag.decision{background:rgba(242,184,75,0.15); color:var(--gold); border:1px solid rgba(242,184,75,0.4);}
+  .tag.rest{background:rgba(255,255,255,0.06); color:var(--muted); border:1px solid var(--line);}
+
+  /* INFO CARDS */
+  .info-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+    margin-top:8px;
+  }
+  @media(max-width:700px){.info-grid{grid-template-columns:1fr;}}
+  .card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:20px 22px;
+  }
+  .card h3{font-size:16px; margin:0 0 10px; font-weight:600;}
+  .card p, .card li{font-size:14px; color:var(--muted); margin:0 0 6px;}
+  .card strong{color:var(--text);}
+
+  /* PENDIENTES */
+  .pendientes{
+    max-width:920px; margin:56px auto; padding:0 24px;
+  }
+  .pendientes h2{font-size:26px; margin-bottom:6px;}
+  .pendientes .range{color:var(--muted); font-family:'JetBrains Mono',monospace; font-size:13px; margin-bottom:24px;}
+  .pend-item{
+    display:flex; gap:14px;
+    padding:14px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .pend-item:last-child{border-bottom:none;}
+  .pend-item .dot{
+    width:8px;height:8px;border-radius:50%;
+    background:var(--gold); margin-top:7px; flex-shrink:0;
+  }
+  .pend-item b{display:block; font-size:14.5px; margin-bottom:2px;}
+  .pend-item span{font-size:13.5px; color:var(--muted);}
+
+  footer{
+    text-align:center; padding:40px 24px 60px;
+    color:var(--muted); font-family:'JetBrains Mono',monospace; font-size:12px;
+  }
+  footer a{color:var(--teal);}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="eyebrow">Carlos &amp; Vivi · Borrador de itinerario</div>
+  <h1>Sydney Marathon + Australia<br>28 Ago — 13 Sep 2026</h1>
+  <p class="sub">Segundo Major de Carlos. 17 días para correr, bucear el arrecife más grande del mundo, y conocer Sydney, Cairns y Melbourne sin morir en el intento.</p>
+  <div class="facts">
+    <div class="fact"><div class="n">17</div><div class="l">días en Australia</div></div>
+    <div class="fact"><div class="n">30 Ago</div><div class="l">día de la maratón</div></div>
+    <div class="fact"><div class="n">3</div><div class="l">ciudades</div></div>
+    <div class="fact"><div class="n">2/2</div><div class="l">noches liveaboard</div></div>
+  </div>
+</div>
+
+<div class="navbar">
+  <a href="#sydney1">Sydney · pre/post carrera</a>
+  <a href="#cairns">Cairns · Reef</a>
+  <a href="#melbourne">Melbourne · GOR</a>
+  <a href="#sydney2">Cierre en Sydney</a>
+  <a href="#pendientes">Pendientes</a>
+</div>
+
+<!-- SYDNEY LEG 1 -->
+<section class="leg sydney" id="sydney1">
+  <div class="leg-header">
+    <span class="leg-badge">Leg 01</span>
+  </div>
+  <h2>Sydney — antes y después de correr</h2>
+  <div class="range">28 AGO → 2 SEP · 6 días</div>
+  <img class="leg-photo" src="https://commons.wikimedia.org/wiki/Special:FilePath/Sydney_Opera_House,_Sydney.jpg" alt="Sydney Opera House">
+
+  <div class="timeline">
+    <div class="day">
+      <div class="day-head"><span class="day-date">VIE 28 AGO</span><span class="day-title">Llegada</span></div>
+      <p class="day-desc">Check-in y nada de plan pesado — solo estirar las piernas del vuelo. Si llegan con energía, el Museum of Contemporary Art (MCA) está a un lado del hostal, entrada gratis a la colección permanente.</p>
+      <ul><li>Check-in en hostal (The Rocks / Circular Quay)</li><li>Caminata ligera por el barrio</li><li>Opcional: MCA</li></ul>
+    </div>
+    <div class="day">
+      <div class="day-head"><span class="day-date">SAB 29 AGO</span><span class="day-title">Expo + shakeout — cero desgaste</span></div>
+      <p class="day-desc">Recoger el kit de corredor, shakeout run corto, y el resto del día en modo "sentado viendo paisaje". Nada de caminatas largas.</p>
+      <ul>
+        <li>Recoger bib en la expo del maratón</li>
+        <li>Shakeout run corto (20-30 min)</li>
+        <li>Harbour cruise (1-1.5h) o ferry a Manly — te sientas, ves Opera House y Harbour Bridge desde el agua</li>
+        <li>Art Gallery of NSW — entrada gratis</li>
+        <li>Carga de carbohidratos por la noche</li>
+      </ul>
+    </div>
+    <div class="day">
+      <div class="day-head"><span class="day-date">DOM 30 AGO</span><span class="day-title">MARATÓN 🏁</span><span class="tag confirmed">TCS Sydney Marathon</span></div>
+      <p class="day-desc">Start en St Leonards Park, Milsons Point (North Sydney). Finish en la Opera House Forecourt. Bib = transporte público gratis ese día; salen trenes extra desde temprano. Wave 1 arranca 6:31am.</p>
+      <ul><li>Llegar por Victoria Cross Metro / North Sydney Station (10-15 min caminando al corral)</li><li>Cruzan el Harbour Bridge en la carrera — el momento del viaje</li></ul>
+      <div class="day-head" style="margin-top:14px;"><span class="day-title" style="font-size:15px;">Opcional según cómo se sientan</span><span class="tag decision">Decidir el día</span></div>
+      <p class="day-desc" style="margin-bottom:0;">Ya van a estar parados en la meta, así que caminar suave por Circular Quay / The Rocks y comer algo cerca no cuesta ningún traslado extra. Lo que sí: esa misma noche duermen en el mismo hostal — nada de mudanza a Bondi hasta el día siguiente (el DOMS pega fuerte 3-6h después de un maratón, es el peor momento para logística).</li></ul>
+    </div>
+    <div class="day">
+      <div class="day-head"><span class="day-date">LUN 31 AGO</span><span class="day-title">Recuperación + mudanza a Bondi</span></div>
+      <p class="day-desc">Guardan maletas en el hostal (día de storage), terminan de recorrer Rocks/Circular Quay/Opera House caminando suave, comen algo, y en la tarde/noche Uber directo a Bondi con las maletas.</p>
+      <ul><li>Guardar equipaje en el hostal durante el día</li><li>Rocks / Circular Quay / Opera House a paso lento</li><li>Tarde-noche: traslado a Bondi</li></ul>
+    </div>
+    <div class="day">
+      <div class="day-head"><span class="day-date">MAR 1 SEP</span><span class="day-title">Bondi</span></div>
+      <p class="day-desc">Día de playa y recuperación activa. La alberca icónica junto al mar es <strong>Bondi Icebergs Pool</strong>, extremo sur de Bondi Beach — pública, agua salada directo del mar, ~$10 AUD, incluye sauna. Cierra los jueves para limpieza (no aplica esta fecha).</p>
+      <ul><li>Bondi Icebergs Pool — agua fría + salada, buena para piernas post-maratón</li><li>Si el cuerpo responde: caminata costera Bondi → Coogee</li><li>Brunch en Bondi (zona de Campbell Parade)</li></ul>
+    </div>
+  </div>
+
+  <div class="info-grid">
+    <div class="card">
+      <h3>Dónde quedarse</h3>
+      <p><strong>28–31 ago:</strong> zona The Rocks / Circular Quay — caminable al finish, conexión directa en tren/metro a North Sydney para el start. YHA Sydney Harbour (ya sin lugar) — alternativas en la misma zona: <strong>Nomads Sydney</strong>, <strong>Base Backpackers</strong>, <strong>Wood Duck Inn</strong>.</p>
+      <p><strong>31 ago–1 sep:</strong> Bondi, frente a la playa.</p>
+    </div>
+    <div class="card">
+      <h3>Por qué esta zona y no Surry Hills</h3>
+      <p>Surry Hills/Potts Point quedan del lado sur, lejos del start (North Sydney). Priorizamos cercanía al <strong>finish</strong> — ahí es donde de verdad importa no caminar de más después de 42km.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CAIRNS -->
+<section class="leg cairns" id="cairns">
+  <div class="leg-header"><span class="leg-badge">Leg 02</span></div>
+  <h2>Cairns — Great Barrier Reef</h2>
+  <div class="range">2 SEP → 6 SEP · liveaboard confirmado</div>
+  <img class="leg-photo" src="https://commons.wikimedia.org/wiki/Special:FilePath/Great_Barrier_Reef_Coral.jpg" alt="Great Barrier Reef coral">
+
+  <div class="timeline">
+    <div class="day">
+      <div class="day-head"><span class="day-date">MIE 2 SEP</span><span class="day-title">Vuelo Sydney → Cairns</span></div>
+      <p class="day-desc">Vuelo por la mañana. Check-in del liveaboard antes de las 6pm. Tarde libre para caminar el Esplanade.</p>
+    </div>
+    <div class="day">
+      <div class="day-head"><span class="day-date">JUE 3 – SAB 5 SEP</span><span class="day-title">Liveaboard Pro Dive Cairns</span><span class="tag confirmed">Reservado</span></div>
+      <p class="day-desc">3 días / 2 noches en Ribbon Reefs y Cod Hole. La mejor experiencia de inmersiones consecutivas que se puede tener en la Gran Barrera — ya certificados los dos, así que aprovechan al máximo.</p>
+    </div>
+    <div class="day">
+      <div class="day-head"><span class="day-date">DOM 6 SEP</span><span class="day-title">Ventana de no-vuelo + vuelo a Melbourne</span></div>
+      <p class="day-desc">Regla de seguridad: mínimo 18-24h sin volar después de días consecutivos de buceo. Mañana de descanso en Cairns, vuelo a Melbourne al mediodía/tarde.</p>
+    </div>
+  </div>
+
+  <div class="info-grid">
+    <div class="card">
+      <h3>Zona para hospedarse (2 sep)</h3>
+      <p>El Esplanade, Cairns — caminable al muelle de donde sale el barco. Opciones: YHA Cairns Central, Global Backpackers.</p>
+    </div>
+    <div class="card">
+      <h3>Operador de buceo</h3>
+      <p><strong>Pro Dive Cairns</strong> — liveaboard 3 días/2 noches, hasta 11 inmersiones. Ribbon Reefs + Cod Hole.</p>
+    </div>
+  </div>
+</section>
+
+<!-- MELBOURNE -->
+<section class="leg melbourne" id="melbourne">
+  <div class="leg-header"><span class="leg-badge">Leg 03</span></div>
+  <h2>Melbourne + Great Ocean Road</h2>
+  <div class="range">6 SEP → 11 SEP · 5 días</div>
+  <img class="leg-photo" src="https://commons.wikimedia.org/wiki/Special:FilePath/Street_Art_in_Hosier_Lane_06.jpg" alt="Hosier Lane street art Melbourne">
+
+  <div class="timeline">
+    <div class="day">
+      <div class="day-head"><span class="day-date">DOM 6 SEP</span><span class="day-title">Llegada</span></div>
+      <p class="day-desc">Llegan por la tarde/noche. Cena ligera, sin plan.</p>
+    </div>
+    <div class="day">
+      <div class="day-head"><span class="day-date">LUN 7 SEP</span><span class="day-title">Ciudad — día 1</span></div>
+      <ul><li>Hosier Lane y laneways de street art</li><li>Queen Victoria Market</li><li>Federation Square</li><li>Melbourne Cricket Ground (MCG)</li></ul>
+    </div>
+    <div class="day">
+      <div class="day-head"><span class="day-date">MAR 8 SEP</span><span class="day-title">Great Ocean Road — día completo</span></div>
+      <p class="day-desc">Con <strong>Go West Tours</strong> — el operador mejor calificado de Melbourne, grupos pequeños, ruta "reverse" que evita los camiones de turistas en los Twelve Apostles.</p>
+      <ul><li>Twelve Apostles</li><li>Loch Ard Gorge</li><li>Selva de Otway</li></ul>
+    </div>
+    <div class="day">
+      <div class="day-head"><span class="day-date">MIE 9 SEP</span><span class="day-title">Fitzroy / Brunswick St</span></div>
+      <p class="day-desc">Día de barrio y café — Melbourne se toma en serio su café, aprovéchenlo.</p>
+    </div>
+    <div class="day">
+      <div class="day-head"><span class="day-date">JUE 10 SEP</span><span class="day-title">St Kilda / libre</span></div>
+      <p class="day-desc">Día colchón — margen por si el vuelo del 6 se retrasó, o simplemente para relajarse antes de volar de vuelta a Sydney.</p>
+    </div>
+    <div class="day">
+      <div class="day-head"><span class="day-date">VIE 11 SEP</span><span class="day-title">Vuelo Melbourne → Sydney</span></div>
+      <p class="day-desc">Movido un día antes para dejar colchón antes del vuelo internacional del 13.</p>
+    </div>
+  </div>
+
+  <div class="info-grid">
+    <div class="card">
+      <h3>Dónde quedarse</h3>
+      <p>Fitzroy o St Kilda — mejor combinación de hostales + vida de barrio. St Kilda además deja cerca la playa.</p>
+    </div>
+    <div class="card">
+      <h3>Great Ocean Road: ¿por qué día completo y no roadtrip?</h3>
+      <p>Un roadtrip de varios días le quita tiempo a la ciudad y al descanso post-maratón. Un día completo cubre lo esencial sin ese costo.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SYDNEY 2 -->
+<section class="leg sydney2" id="sydney2">
+  <div class="leg-header"><span class="leg-badge">Cierre</span></div>
+  <h2>De vuelta a Sydney</h2>
+  <div class="range">11 SEP → 13 SEP</div>
+
+  <div class="timeline">
+    <div class="day">
+      <div class="day-head"><span class="day-date">VIE 11 SEP</span><span class="day-title">Tarde libre en Sydney</span></div>
+      <p class="day-desc">Llegan de Melbourne, tarde libre, última cena tranquila.</p>
+    </div>
+    <div class="day">
+      <div class="day-head"><span class="day-date">SAB 12 SEP</span><span class="day-title">Blue Mountains — o Manly</span><span class="tag decision">Por definir</span></div>
+      <p class="day-desc"><strong>Blue Mountains:</strong> día completo, Three Sisters, selva de eucaliptos, Scenic World — el pendiente con más valor único del viaje. <strong>Manly:</strong> ferry corto desde Circular Quay, playa, caminata Manly-Spit — la opción relax si ya vienen molidos de maratón + buceo + semanas de viaje.</p>
+    </div>
+    <div class="day">
+      <div class="day-head"><span class="day-date">DOM 13 SEP</span><span class="day-title">Vuelo internacional de regreso</span><span class="tag confirmed">Desde Sydney</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- PENDIENTES -->
+<div class="pendientes" id="pendientes">
+  <h2>Pendientes para revisar con Vivi</h2>
+  <div class="range">Cosas que faltan por decidir o afinar</div>
+
+  <div class="pend-item">
+    <div class="dot"></div>
+    <div><b>Blue Mountains vs. Manly (12 sep)</b><span>Decidir según cómo lleguen de energía esa altura del viaje.</span></div>
+  </div>
+  <div class="pend-item">
+    <div class="dot"></div>
+    <div><b>Restaurantes específicos por barrio</b><span>Surry Hills, Bondi, Fitzroy, Cairns Esplanade — falta armar la lista.</span></div>
+  </div>
+  <div class="pend-item">
+    <div class="dot"></div>
+    <div><b>Hostal en Sydney (28-31 ago)</b><span>YHA Sydney Harbour sin lugar — confirmar disponibilidad en Nomads Sydney, Base Backpackers o Wood Duck Inn.</span></div>
+  </div>
+  <div class="pend-item">
+    <div class="dot"></div>
+    <div><b>Hostales Cairns y Melbourne</b><span>Zonas ya definidas (Esplanade / Fitzroy-St Kilda) — falta reservar nombres concretos.</span></div>
+  </div>
+  <div class="pend-item">
+    <div class="dot"></div>
+    <div><b>Great Ocean Road</b><span>Confirmar reserva con Go West Tours para el 8 sep.</span></div>
+  </div>
+</div>
+
+<footer>
+  Documento vivo — pídeme cualquier ajuste (fechas, actividades, hospedaje) y lo actualizamos aquí mismo.
+</footer>
+
+</body>
+</html>
