@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Australia 2026 — Itinerario</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F7FAFB;
+    --bg-alt:#EAF3F2;
+    --card:#FFFFFF;
+    --ink:#0B2530;
+    --muted:#5C7780;
+    --teal:#0B7C8C;
+    --teal-deep:#095F6C;
+    --coral:#FF5A45;
+    --sun:#FFC23C;
+    --line: rgba(11,37,48,0.12);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:'Inter',sans-serif; line-height:1.55;}
+  h1,h2,h3,.display{font-family:'Space Grotesk',sans-serif;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+  a{color:inherit;}
+
+  /* NAV */
+  .navbar{
+    position:sticky; top:0; z-index:60;
+    background:rgba(247,250,251,0.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0 24px;
+  }
+  .navbar .brand{font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:15px; padding:16px 0; letter-spacing:.02em;}
+  .navlinks{display:flex; gap:2px; overflow-x:auto;}
+  .navlinks a{
+    font-family:'JetBrains Mono',monospace; font-size:11.5px; text-transform:uppercase;
+    color:var(--muted); text-decoration:none; padding:16px 14px; white-space:nowrap;
+    border-bottom:2px solid transparent;
+  }
+  .navlinks a:hover{color:var(--ink); border-bottom-color:var(--coral);}
+  .navlinks a b{color:var(--teal); font-weight:600;}
+
+  /* HERO */
+  .hero{max-width:1040px; margin:0 auto; padding:76px 24px 40px;}
+  .eyebrow-row{display:flex; align-items:center; gap:10px; margin-bottom:22px;}
+  .pill{
+    font-family:'JetBrains Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.08em;
+    background:var(--sun); color:var(--ink); padding:6px 12px; border-radius:20px; font-weight:600;
+  }
+  .hero h1{
+    font-size:clamp(40px,7vw,84px); font-weight:700; line-height:0.98; margin:0 0 22px; letter-spacing:-0.01em;
+    text-transform:uppercase;
+  }
+  .hero h1 .accent{color:var(--teal);}
+  .hero p.sub{color:var(--muted); font-size:18px; max-width:560px; margin:0 0 36px;}
+
+  .stats-row{display:flex; flex-wrap:wrap; gap:0; border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .stat{flex:1 1 140px; padding:20px 22px; border-right:1px solid var(--line);}
+  .stat:last-child{border-right:none;}
+  .stat .num{font-family:'Space Grotesk',sans-serif; font-size:30px; font-weight:700; color:var(--teal);}
+  .stat .lab{font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; margin-top:2px;}
+
+  /* TICKER */
+  .ticker-wrap{
+    background:var(--ink); color:var(--bg); overflow:hidden; white-space:nowrap;
+    padding:14px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+  }
+  .ticker{display:inline-block; animation:scroll 28s linear infinite;}
+  .ticker span{font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:16px; text-transform:uppercase; letter-spacing:.03em; margin-right:28px;}
+  .ticker span.dot{color:var(--coral);}
+  @keyframes scroll{from{transform:translateX(0);} to{transform:translateX(-50%);}}
+  @media (prefers-reduced-motion: reduce){.ticker{animation:none;}}
+
+  /* LEG SECTIONS */
+  .leg{max-width:1040px; margin:0 auto; padding:64px 24px 20px;}
+  .leg-photo-wrap{
+    position:relative; border-radius:6px; overflow:hidden; height:320px; margin-bottom:36px;
+  }
+  .leg-photo-wrap img{width:100%; height:100%; object-fit:cover; display:block;}
+  .leg-photo-wrap::after{
+    content:""; position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(11,37,48,0.05) 0%, rgba(11,37,48,0.75) 100%);
+  }
+  .leg-overlay{position:absolute; left:0; right:0; bottom:0; padding:26px 30px; z-index:2; color:#fff; display:flex; align-items:flex-end; justify-content:space-between; gap:20px;}
+  .leg-num{font-family:'Space Grotesk',sans-serif; font-size:76px; font-weight:700; line-height:.8; opacity:.85;}
+  .leg-title h2{font-size:30px; margin:0 0 4px; color:#fff; text-transform:uppercase;}
+  .leg-title .range{font-family:'JetBrains Mono',monospace; font-size:13px; color:rgba(255,255,255,0.85);}
+
+  .day-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:16px;}
+  @media(max-width:720px){.day-grid{grid-template-columns:1fr;}}
+  .day-card{
+    background:var(--card); border:1px solid var(--line); border-radius:6px; padding:22px 24px;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .day-card:hover{transform:translateY(-2px); box-shadow:0 8px 24px rgba(11,37,48,0.08);}
+  .day-card .date-row{display:flex; align-items:center; gap:10px; margin-bottom:8px; flex-wrap:wrap;}
+  .date-tag{font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--teal); font-weight:600; text-transform:uppercase;}
+  .day-card h3{font-size:17px; margin:0; text-transform:none;}
+  .day-card p{color:var(--muted); font-size:14.5px; margin:0 0 10px;}
+  .day-card ul{list-style:none; margin:0; padding:0;}
+  .day-card li{font-size:14px; margin-bottom:6px; padding-left:20px; position:relative; color:var(--ink);}
+  .day-card li::before{content:"//"; position:absolute; left:0; color:var(--coral); font-family:'JetBrains Mono',monospace; font-weight:600; font-size:12px;}
+  .status{
+    font-family:'JetBrains Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:.05em;
+    padding:3px 9px; border-radius:20px; font-weight:600;
+  }
+  .status.confirmed{background:rgba(11,124,140,0.12); color:var(--teal);}
+  .status.decision{background:rgba(255,194,60,0.25); color:#8a6512;}
+
+  .leg-info{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:16px;}
+  @media(max-width:720px){.leg-info{grid-template-columns:1fr;}}
+  .info-card{background:var(--bg-alt); border-radius:6px; padding:20px 24px;}
+  .info-card h4{margin:0 0 8px; font-size:14px; text-transform:uppercase; letter-spacing:.03em; font-family:'JetBrains Mono',monospace; color:var(--teal-deep);}
+  .info-card p{margin:0; font-size:14px; color:var(--ink); opacity:.85;}
+
+  /* CHECKLIST */
+  .checklist-section{max-width:1040px; margin:0 auto; padding:70px 24px;}
+  .section-head{margin-bottom:28px;}
+  .section-head .kicker{font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--coral); text-transform:uppercase; letter-spacing:.08em; margin-bottom:8px;}
+  .section-head h2{font-size:32px; margin:0; text-transform:uppercase;}
+  .checklist-panel{background:var(--card); border:1px solid var(--line); border-radius:8px; padding:8px;}
+  .add-row{display:flex; gap:8px; padding:14px; border-bottom:1px solid var(--line);}
+  .add-row input[type=text]{
+    flex:1; border:1px solid var(--line); border-radius:6px; padding:11px 14px; font-family:'Inter',sans-serif; font-size:14px; background:var(--bg);
+  }
+  .add-row input[type=text]:focus{outline:2px solid var(--teal); outline-offset:1px;}
+  .add-row button{
+    background:var(--ink); color:#fff; border:none; border-radius:6px; padding:0 20px; font-family:'JetBrains Mono',monospace;
+    font-size:12px; text-transform:uppercase; letter-spacing:.05em; cursor:pointer; font-weight:600;
+  }
+  .add-row button:hover{background:var(--teal-deep);}
+  #checklistItems{list-style:none; margin:0; padding:6px;}
+  #checklistItems li{
+    display:flex; align-items:center; gap:12px; padding:13px 14px; border-radius:6px;
+  }
+  #checklistItems li:hover{background:var(--bg-alt);}
+  #checklistItems input[type=checkbox]{width:18px; height:18px; accent-color:var(--teal); flex-shrink:0; cursor:pointer;}
+  #checklistItems .txt{flex:1; font-size:14.5px;}
+  #checklistItems li.done .txt{text-decoration:line-through; color:var(--muted);}
+  #checklistItems .del{
+    background:none; border:none; color:var(--muted); cursor:pointer; font-size:16px; opacity:0; transition:opacity .1s;
+  }
+  #checklistItems li:hover .del{opacity:1;}
+  .checklist-meta{font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--muted); padding:12px 14px 4px;}
+
+  /* PENDIENTES ACCORDION */
+  .pendientes-section{max-width:1040px; margin:0 auto; padding:0 24px 90px;}
+  .faq-item{border-bottom:1px solid var(--line);}
+  .faq-q{
+    display:flex; justify-content:space-between; align-items:center; padding:20px 4px; cursor:pointer;
+    font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:16.5px;
+  }
+  .faq-q .idx{font-family:'JetBrains Mono',monospace; color:var(--coral); font-weight:600; margin-right:14px; font-size:14px;}
+  .faq-toggle{font-size:20px; color:var(--teal); transition:transform .2s;}
+  .faq-item.open .faq-toggle{transform:rotate(45deg);}
+  .faq-a{max-height:0; overflow:hidden; transition:max-height .25s ease;}
+  .faq-item.open .faq-a{max-height:200px;}
+  .faq-a p{margin:0 0 18px; padding-left:34px; color:var(--muted); font-size:14.5px; max-width:640px;}
+
+  footer{text-align:center; padding:40px 24px 60px; color:var(--muted); font-family:'JetBrains Mono',monospace; font-size:12px; border-top:1px solid var(--line);}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="brand">AUSTRALIA_2026</div>
+  <div class="navlinks">
+    <a href="#sydney1"><b>01</b> /SYDNEY</a>
+    <a href="#cairns"><b>02</b> /CAIRNS</a>
+    <a href="#melbourne"><b>03</b> /MELBOURNE</a>
+    <a href="#sydney2"><b>04</b> /CIERRE</a>
+    <a href="#checklist"><b>05</b> /CHECKLIST</a>
+    <a href="#pendientes"><b>06</b> /PENDIENTES</a>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="eyebrow-row"><span class="pill">En planeación</span></div>
+  <h1>Sydney <span class="accent">→</span> Cairns <span class="accent">→</span> Melbourne</h1>
+  <p class="sub">17 días para correr un Major, bucear la Gran Barrera de Coral y recorrer el sureste de Australia sin desperdiciar ni un día.</p>
+  <div class="stats-row">
+    <div class="stat"><div class="num">17</div><div class="lab">días</div></div>
+    <div class="stat"><div class="num">03</div><div class="lab">ciudades</div></div>
+    <div class="stat"><div class="num">42.2</div><div class="lab">km a correr</div></div>
+    <div class="stat"><div class="num">02</div><div class="lab">noches liveaboard</div></div>
+  </div>
+</div>
+
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span>Maratón <span class="dot">//</span></span>
+    <span>Gran Barrera de Coral <span class="dot">//</span></span>
+    <span>Great Ocean Road <span class="dot">//</span></span>
+    <span>Bondi <span class="dot">//</span></span>
+    <span>Melbourne laneways <span class="dot">//</span></span>
+    <span>Maratón <span class="dot">//</span></span>
+    <span>Gran Barrera de Coral <span class="dot">//</span></span>
+    <span>Great Ocean Road <span class="dot">//</span></span>
+    <span>Bondi <span class="dot">//</span></span>
+    <span>Melbourne laneways <span class="dot">//</span></span>
+  </div>
+</div>
+
+<!-- SYDNEY 1 -->
+<section class="leg" id="sydney1">
+  <div class="leg-photo-wrap">
+    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Sydney_Opera_House,_Sydney.jpg" alt="Sydney Opera House">
+    <div class="leg-overlay">
+      <div class="leg-title"><h2>Sydney</h2><div class="range">28 AGO → 2 SEP · pre y post carrera</div></div>
+      <div class="leg-num">01</div>
+    </div>
+  </div>
+
+  <div class="day-grid">
+    <div class="day-card">
+      <div class="date-row"><span class="date-tag">Vie 28 Ago</span></div>
+      <h3>Llegada</h3>
+      <p>Check-in y nada de plan pesado, solo estirar las piernas del vuelo.</p>
+      <ul>
+        <li><b>Check-in hostal</b> — The Rocks / Circular Quay, el barrio más antiguo de Sydney: calles de adoquín, bodegas del siglo XIX convertidas en bares y restaurantes, todo a los pies del Harbour Bridge.</li>
+        <li><b>Caminata ligera</b> por el barrio, solo para desentumir el vuelo.</li>
+        <li><b>Opcional: MCA</b> (Museum of Contemporary Art) — un edificio art-decó de los años 50 sobre el muelle, hoy lleno de arte australiano y aborigen contemporáneo. Entrada gratis, y está literal a un lado del hostal.</li>
+      </ul>
+    </div>
+    <div class="day-card">
+      <div class="date-row"><span class="date-tag">Sáb 29 Ago</span></div>
+      <h3>Expo + shakeout — cero desgaste</h3>
+      <p>Recoger kit, shakeout corto, y el resto del día sentados viendo paisaje.</p>
+      <ul>
+        <li><b>Recoger bib en la expo</b> del maratón — el ritual previo de cualquier Major, ver el mar de corredores de 100+ países.</li>
+        <li><b>Shakeout run</b> de 20-30 min, solo para activar piernas sin gastarlas.</li>
+        <li><b>Harbour cruise o ferry a Manly</b> — te sientas y el barco hace el trabajo: pasas bajo el Harbour Bridge, frente a la Opera House, y ves Sydney desde el ángulo que solo se ve desde el agua. Manly además tiene una de las mejores playas de surf de la ciudad, a 30 min en ferry.</li>
+        <li><b>Art Gallery of NSW</b> — la galería de arte más importante del estado, con obra australiana, aborigen e internacional (Picasso, Matisse incluidos). Entrada gratis, junto al Royal Botanic Garden.</li>
+      </ul>
+    </div>
+    <div class="day-card">
+      <div class="date-row"><span class="date-tag">Dom 30 Ago</span> <span class="status confirmed">TCS Sydney Marathon</span></div>
+      <h3>Maratón 🏁</h3>
+      <p>Start St Leonards Park, Milsons Point. Finish Opera House. Bib = transporte gratis, wave 1 arranca 6:31am.</p>
+      <ul>
+        <li>Llegar por <b>Victoria Cross Metro / North Sydney Station</b>, 10-15 min caminando al corral.</li>
+        <li>Opcional si se sienten bien: caminar <b>The Rocks / Circular Quay / Opera House</b> + comer algo — es el sitio donde desembarcó la primera flota británica en 1788, hoy lleno de mercados de fin de semana, galerías pequeñas y vistas directas al Harbour Bridge. Y ya van a estar parados justo ahí al cruzar la meta.</li>
+        <li>Dormir esa noche en el mismo hostal — sin mudanza.</li>
+      </ul>
+    </div>
+    <div class="day-card">
+      <div class="date-row"><span class="date-tag">Lun 31 Ago</span></div>
+      <h3>Mudanza a Bondi + Icebergs Pool</h3>
+      <p>Check-out por la mañana, Uber directo a Bondi con las maletas — sin dejar nada guardado, se instalan de una vez.</p>
+      <ul>
+        <li><b>Bondi Icebergs Pool</b> — la alberca más fotografiada del mundo, agua de mar directo sobre las rocas al sur de Bondi Beach, con olas que a veces se meten por encima del muro. Frío y salado, el día después del maratón es justo cuando más ayuda para bajar la inflamación de las piernas. Pública, ~$10 AUD, incluye sauna.</li>
+        <li>Tarde relajada — camastro en la playa, nada de planes que impliquen caminar de más.</li>
+      </ul>
+    </div>
+    <div class="day-card">
+      <div class="date-row"><span class="date-tag">Mar 1 Sep</span></div>
+      <h3>Bondi — día 2</h3>
+      <p>Con un día más de recuperación encima, aquí sí se puede meter algo con más movimiento si el cuerpo responde.</p>
+      <ul>
+        <li>Si el cuerpo aguanta: <b>caminata costera Bondi → Coogee</b> — 6km de acantilados, playas escondidas y el cementerio Waverley con vista al mar, uno de los paseos más lindos de Sydney.</li>
+        <li>Si prefieren algo tranquilo: <b>Bronte Beach</b>, una playa pequeña y menos turística a 15 min caminando desde Bondi, con parque y alberca de roca propia.</li>
+        <li><b>Icebergs Dining Room</b> — si quieren cerrar los días de Bondi con una cena con vista directa a la alberca y el mar.</li>
+      </ul>
+    </div>
+    <div class="day-card" style="background:var(--bg-alt); border:none;">
+      <h3>Dónde quedarse</h3>
+      <p><b>28–31 ago:</b> The Rocks / Circular Quay — caminable al finish, tren directo a North Sydney para el start. YHA sin lugar, alternativas: Nomads Sydney, Base Backpackers, Wood Duck Inn.</p>
+      <p><b>31 ago–1 sep:</b> Bondi, frente a la playa.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CAIRNS -->
+<section class="leg" id="cairns">
+  <div class="leg-photo-wrap">
+    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Great_Barrier_Reef_Coral.jpg" alt="Great Barrier Reef">
+    <div class="leg-overlay">
+      <div class="leg-title"><h2>Cairns</h2><div class="range">2 SEP → 6 SEP · Great Barrier Reef</div></div>
+      <div class="leg-num">02</div>
+    </div>
+  </div>
+
+  <div class="day-grid">
+    <div class="day-card">
+      <div class="date-row"><span class="date-tag">Mié 2 Sep</span></div>
+      <h3>Vuelo Sydney → Cairns</h3>
+      <p>Vuelo por la mañana. Check-in del liveaboard antes de las 6pm. Tarde libre en el Esplanade.</p>
+    </div>
+    <div class="day-card">
+      <div class="date-row"><span class="date-tag">Jue 3 – Sáb 5 Sep</span> <span class="status confirmed">Reservado</span></div>
+      <h3>Liveaboard Pro Dive Cairns</h3>
+      <p>3 días / 2 noches en Ribbon Reefs y Cod Hole — hasta 11 inmersiones. Ambos ya certificados.</p>
+    </div>
+    <div class="day-card">
+      <div class="date-row"><span class="date-tag">Dom 6 Sep</span></div>
+      <h3>Ventana de no-vuelo + vuelo a Melbourne</h3>
+      <p>18-24h mínimo sin volar después de días consecutivos de buceo. Mañana de descanso, vuelo al mediodía/tarde.</p>
+    </div>
+    <div class="day-card" style="background:var(--bg-alt); border:none;">
+      <h3>Zona y operador</h3>
+      <p><b>Hospedaje:</b> El Esplanade, Cairns — caminable al muelle (YHA Cairns Central, Global Backpackers).</p>
+      <p><b>Buceo:</b> Pro Dive Cairns, liveaboard 3 días/2 noches.</p>
+    </div>
+  </div>
+</section>
+
+<!-- MELBOURNE -->
+<section class="leg" id="melbourne">
+  <div class="leg-photo-wrap">
+    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Street_Art_in_Hosier_Lane_06.jpg" alt="Hosier Lane Melbourne">
+    <div class="leg-overlay">
+      <div class="leg-title"><h2>Melbourne</h2><div class="range">6 SEP → 11 SEP · ciudad + Great Ocean Road</div></div>
+      <div class="leg-num">03</div>
+    </div>
+  </div>
+
+  <div class="day-grid">
+    <div class="day-card">
+      <div class="date-row"><span class="date-tag">Dom 6 Sep</span></div>
+      <h3>Llegada</h3>
+      <p>Llegan por la tarde/noche. Cena ligera, sin plan.</p>
+    </div>
+    <div class="day-card">
+      <div class="date-row"><span class="date-tag">Lun 7 Sep</span></div>
+      <h3>Ciudad — día 1</h3>
+      <ul>
+        <li><b>Hosier Lane</b> — el callejón de arte urbano más famoso de Australia, muros que cambian de mural cada semana, foco de fotógrafos y artistas desde los 90s. La postal de Melbourne que no es un edificio.</li>
+        <li><b>Queen Victoria Market</b> — mercado de 1878, todavía en funciones: puestos de comida, productores locales, delis, y los famosos food trucks nocturnos los miércoles en verano.</li>
+        <li><b>Federation Square</b> — la plaza cívica de Melbourne, arquitectura fragmentada y llamativa, rodeada de museos y con pantallas gigantes donde la ciudad entera se junta a ver deportes.</li>
+        <li><b>Melbourne Cricket Ground (MCG)</b> — el estadio más grande e icónico de Australia, cuna del cricket y el fútbol australiano; hay tour por dentro aunque no haya partido.</li>
+      </ul>
+    </div>
+    <div class="day-card">
+      <div class="date-row"><span class="date-tag">Mar 8 Sep</span></div>
+      <h3>Great Ocean Road — día completo</h3>
+      <p>Con Go West Tours — grupos pequeños, ruta "reverse" que evita los camiones de turistas.</p>
+      <ul>
+        <li><b>Twelve Apostles</b> — enormes formaciones de piedra caliza paradas en el mar, esculpidas por 20 millones de años de olas del Southern Ocean. Quedan 8, y siguen erosionándose — es de esas cosas que hay que ver antes de que se caigan más.</li>
+        <li><b>Loch Ard Gorge</b> — un desfiladero angosto donde el mar entra entre paredes verticales; nombrado por un naufragio de 1878 del que solo sobrevivieron dos personas.</li>
+        <li><b>Selva de Otway</b> — tramo de bosque templado con helechos gigantes y koalas salvajes en los eucaliptos, justo al lado de la carretera.</li>
+      </ul>
+    </div>
+    <div class="day-card">
+      <div class="date-row"><span class="date-tag">Mié 9 Sep</span></div>
+      <h3>Fitzroy / Brunswick St</h3>
+      <p><b>Fitzroy</b> es el barrio bohemio de Melbourne — el primer suburbio de la ciudad, hoy lleno de casas victorianas, librerías de segunda mano, galerías chicas y la mejor concentración de cafés de especialidad del país. Brunswick St es su arteria principal: camina, para donde te llame la atención, no hay itinerario que valga aquí.</p>
+    </div>
+    <div class="day-card">
+      <div class="date-row"><span class="date-tag">Jue 10 Sep</span></div>
+      <h3>St Kilda / libre</h3>
+      <p>Día colchón — margen por si el vuelo del 6 se retrasó, o para relajarse. <b>St Kilda</b> es el barrio playero de Melbourne: el muelle al atardecer, los pingüinos que anidan bajo las rocas al anochecer, y Luna Park con su entrada de payaso gigante desde 1912.</p>
+    </div>
+    <div class="day-card" style="background:var(--bg-alt); border:none;">
+      <h3>Dónde quedarse</h3>
+      <p>Fitzroy o St Kilda — mejor combinación de hostales + vida de barrio. St Kilda además deja cerca la playa.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SYDNEY 2 -->
+<section class="leg" id="sydney2">
+  <div class="leg-photo-wrap" style="height:180px;">
+    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Sydney_Opera_House,_Sydney.jpg" alt="Sydney">
+    <div class="leg-overlay">
+      <div class="leg-title"><h2>Cierre en Sydney</h2><div class="range">11 SEP → 13 SEP</div></div>
+      <div class="leg-num">04</div>
+    </div>
+  </div>
+
+  <div class="day-grid">
+    <div class="day-card">
+      <div class="date-row"><span class="date-tag">Vie 11 Sep</span></div>
+      <h3>Vuelo Melbourne → Sydney</h3>
+      <p>Movido un día antes para dejar colchón antes del vuelo internacional. Tarde libre, última cena tranquila.</p>
+    </div>
+    <div class="day-card">
+      <div class="date-row"><span class="date-tag">Sáb 12 Sep</span> <span class="status decision">Por definir</span></div>
+      <h3>Blue Mountains — o Manly</h3>
+      <p><b>Blue Mountains:</b> a 90 min de Sydney, un mar de eucaliptos que desde lejos se ven azules por el aceite que exhalan las hojas. Las Three Sisters son tres picos de roca sagrados para el pueblo Gundungurra, y Scenic World te baja por la selva en un teleférico/tren con 52° de inclinación, el más pronunciado del mundo. Día completo, el pendiente con más valor único del viaje.</p>
+      <p><b>Manly:</b> 30 min en ferry desde Circular Quay — la ruta de ferry más bonita de Sydney, con la ciudad y la Opera House de fondo al salir del puerto. Playa de surf, ambiente relajado, la opción si ya vienen molidos de maratón + buceo + semanas de viaje.</p>
+    </div>
+    <div class="day-card">
+      <div class="date-row"><span class="date-tag">Dom 13 Sep</span> <span class="status confirmed">Desde Sydney</span></div>
+      <h3>Vuelo internacional de regreso</h3>
+    </div>
+  </div>
+</section>
+
+<!-- CHECKLIST -->
+<section class="checklist-section" id="checklist">
+  <div class="section-head">
+    <div class="kicker">05 / Planeación</div>
+    <h2>Checklist general del viaje</h2>
+  </div>
+  <div class="checklist-panel">
+    <div class="add-row">
+      <input type="text" id="newItemInput" placeholder="Agregar pendiente…">
+      <button id="addItemBtn">Agregar</button>
+    </div>
+    <ul id="checklistItems"></ul>
+    <div class="checklist-meta" id="checklistMeta">Cargando…</div>
+  </div>
+</section>
+
+<!-- PENDIENTES -->
+<section class="pendientes-section" id="pendientes">
+  <div class="section-head">
+    <div class="kicker">06 / Abierto</div>
+    <h2>Pendientes con Vivi</h2>
+  </div>
+  <div class="faq-list">
+    <div class="faq-item">
+      <div class="faq-q"><span><span class="idx">01</span>Blue Mountains vs. Manly (12 sep)</span><span class="faq-toggle">+</span></div>
+      <div class="faq-a"><p>Decidir según cómo lleguen de energía esa altura del viaje.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><span><span class="idx">02</span>Restaurantes específicos por barrio</span><span class="faq-toggle">+</span></div>
+      <div class="faq-a"><p>Surry Hills, Bondi, Fitzroy, Cairns Esplanade — falta armar la lista.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><span><span class="idx">03</span>Hostal en Sydney (28-31 ago)</span><span class="faq-toggle">+</span></div>
+      <div class="faq-a"><p>YHA Sydney Harbour sin lugar — confirmar disponibilidad en Nomads Sydney, Base Backpackers o Wood Duck Inn.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><span><span class="idx">04</span>Hostales Cairns y Melbourne</span><span class="faq-toggle">+</span></div>
+      <div class="faq-a"><p>Zonas ya definidas (Esplanade / Fitzroy-St Kilda) — falta reservar nombres concretos.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><span><span class="idx">05</span>Great Ocean Road</span><span class="faq-toggle">+</span></div>
+      <div class="faq-a"><p>Confirmar reserva con Go West Tours para el 8 sep.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Documento vivo — pídeme cualquier ajuste y lo actualizamos aquí mismo.
+</footer>
+
+<script>
+  // FAQ accordion
+  document.querySelectorAll('.faq-item').forEach(item=>{
+    item.querySelector('.faq-q').addEventListener('click',()=>{
+      item.classList.toggle('open');
+    });
+  });
+
+  // CHECKLIST with persistent storage
+  const STORAGE_KEY = 'trip-checklist-items';
+  const defaultItems = [
+    {id:'d1', text:'Confirmar ETA/visa de Australia para ambos', done:false},
+    {id:'d2', text:'Seguro de viaje (que cubra buceo)', done:false},
+    {id:'d3', text:'Vuelos internos: Sydney-Cairns, Cairns-Melbourne, Melbourne-Sydney', done:false},
+    {id:'d4', text:'Pagar saldo del liveaboard Pro Dive Cairns', done:true},
+    {id:'d5', text:'Reservar hostal Sydney (28-31 ago)', done:false},
+    {id:'d6', text:'Reservar hostal Bondi (31 ago-1 sep)', done:false},
+    {id:'d7', text:'Reservar hostal Cairns Esplanade', done:false},
+    {id:'d8', text:'Reservar hostal Melbourne (Fitzroy/St Kilda)', done:false},
+    {id:'d9', text:'Reservar tour Great Ocean Road (Go West Tours)', done:false},
+    {id:'d10', text:'Certificados de buceo (llevar tarjeta física)', done:false},
+    {id:'d11', text:'Ropa: kit de carrera + clima frío para Melbourne', done:false},
+    {id:'d12', text:'Cambiar/activar tarjeta para AUD sin comisión', done:false},
+    {id:'d13', text:'eSIM o roaming para Australia', done:false},
+    {id:'d14', text:'Adaptador de corriente tipo I', done:false}
+  ];
+
+  const listEl = document.getElementById('checklistItems');
+  const metaEl = document.getElementById('checklistMeta');
+  let items = [];
+
+  function render(){
+    listEl.innerHTML = '';
+    items.forEach(it=>{
+      const li = document.createElement('li');
+      li.className = it.done ? 'done' : '';
+      li.innerHTML = `<input type="checkbox" ${it.done?'checked':''} data-id="${it.id}">
+        <span class="txt">${it.text}</span>
+        <button class="del" data-id="${it.id}" title="Eliminar">×</button>`;
+      listEl.appendChild(li);
+    });
+    const doneCount = items.filter(i=>i.done).length;
+    metaEl.textContent = `${doneCount} de ${items.length} completados`;
+    listEl.querySelectorAll('input[type=checkbox]').forEach(cb=>{
+      cb.addEventListener('change', ()=>{
+        const it = items.find(i=>i.id===cb.dataset.id);
+        it.done = cb.checked;
+        save();
+        render();
+      });
+    });
+    listEl.querySelectorAll('.del').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        items = items.filter(i=>i.id!==btn.dataset.id);
+        save();
+        render();
+      });
+    });
+  }
+
+  async function save(){
+    try{
+      await window.storage.set('trip-checklist-items', JSON.stringify(items), true);
+    }catch(e){ console.error('No se pudo guardar el checklist', e); }
+  }
+
+  async function load(){
+    try{
+      const result = await window.storage.get('trip-checklist-items', true);
+      items = result && result.value ? JSON.parse(result.value) : defaultItems;
+    }catch(e){
+      items = defaultItems;
+      try{ await window.storage.set('trip-checklist-items', JSON.stringify(items), true); }catch(e2){}
+    }
+    render();
+  }
+
+  document.getElementById('addItemBtn').addEventListener('click', ()=>{
+    const input = document.getElementById('newItemInput');
+    const val = input.value.trim();
+    if(!val) return;
+    items.push({id:'item-'+Date.now(), text:val, done:false});
+    input.value = '';
+    save();
+    render();
+  });
+  document.getElementById('newItemInput').addEventListener('keydown', (e)=>{
+    if(e.key === 'Enter'){ document.getElementById('addItemBtn').click(); }
+  });
+
+  load();
+</script>
+
+</body>
+</html>
